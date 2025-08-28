@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Electronova — Ofertas</title>
+  <link rel="icon" href="imagenes/electronova.png" />
+  <style>
+    :root{
+      --bg:#f4f6f9;
+      --azul-700:#0d3a66;
+      --azul-500:#1ea7ff;
+      --azul-400:#63c0ff;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --border:rgba(13,58,102,0.08);
+      --shadow-sm:0 6px 20px rgba(16,24,40,0.06);
+      --shadow-md:0 18px 40px rgba(16,24,40,0.10);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:#0f1724;font-family:Inter,system-ui,Arial}
+    a{color:inherit}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:linear-gradient(90deg, rgba(255,255,255,0.70), rgba(255,255,255,0.55));
+      backdrop-filter: blur(6px) saturate(120%);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand img{width:52px;height:52px;object-fit:contain;border-radius:10px}
+    .brand .title{font-weight:800;color:var(--azul-700);font-size:1.05rem;letter-spacing:.2px}
+    nav.primary{display:flex;gap:12px;align-items:center}
+    nav.primary a{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-weight:600}
+    nav.primary a[aria-current="page"]{color:var(--azul-700)}
+    nav.primary a:hover{background:rgba(13,58,102,0.04);color:var(--azul-700)}
+    .menu-toggle{display:none;background:transparent;border:0;font-size:20px;cursor:pointer}
+    @media(max-width:880px){
+      nav.primary{display:none}
+      .menu-toggle{display:inline-block}
+    }
+
+    main{padding:24px 0}
+    h1{margin:0 0 6px;color:var(--azul-700)}
+    p.lead{color:var(--muted);margin-top:0}
+
+    /* Tarjeta de oferta */
+    .offer-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-sm);
+      padding:14px;
+      display:grid;
+      grid-template-columns: 1fr 1.2fr; /* imagen + detalles */
+      gap:16px;
+      margin-bottom:16px;
+      position:relative;
+    }
+    .offer-img{
+      border-radius:12px; overflow:hidden; background:#e9eef6;
+      min-height:260px; display:grid; place-items:center;
+    }
+    .offer-img img{width:100%;height:100%;object-fit:cover}
+
+    .details{display:flex;flex-direction:column;gap:8px}
+    .name{font-weight:900;color:var(--azul-700);font-size:20px}
+    .model{color:var(--muted);font-size:13px;margin-top:-4px}
+
+    .price-line{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+    .price-now{font-size:20px;font-weight:900;color:var(--azul-700)}
+    .price-before{text-decoration:line-through;color:#9aa3b2}
+    .save{font-weight:800;color:#065f46;background:#ecfdf5;border:1px solid #10b98133;border-radius:999px;padding:2px 8px;font-size:12px}
+
+    .discount-badge{
+      position:absolute;left:12px;top:12px;
+      background:linear-gradient(90deg,var(--azul-500),var(--azul-400));
+      color:#032033;font-weight:900;border-radius:999px;padding:6px 10px;font-size:12px;
+      box-shadow:var(--shadow-sm);
+    }
+
+    /* Stock badge */
+    .stock{align-self:flex-start;font-weight:800;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid transparent}
+    .stock.in{color:#065f46;background:#ecfdf5;border-color:#10b98133}    /* verde */
+    .stock.low{color:#92400e;background:#fffbeb;border-color:#f59e0b33}  /* ámbar */
+    .stock.out{color:#991b1b;background:#fef2f2;border-color:#ef444433}  /* rojo */
+
+    .specs{list-style:disc;padding-left:18px;margin:6px 0;color:#111}
+    .specs li{margin:4px 0;font-size:14px}
+    .actions{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+    .btn{
+      background:linear-gradient(90deg,var(--azul-500),var(--azul-400));
+      color:#032033;border:none;border-radius:10px;padding:10px 12px;font-weight:800;text-decoration:none
+    }
+    .btn-outline{
+      background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-weight:800;text-decoration:none;color:var(--azul-700)
+    }
+    .btn[disabled]{opacity:.55;pointer-events:none}
+
+    .terms{color:#6b7280;font-size:12px;margin-top:6px}
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .offer-card{grid-template-columns:1fr}
+      .offer-img{min-height:200px}
+    }
+
+    .back{display:inline-block;margin-top:16px;text-decoration:none;color:var(--azul-700);font-weight:800}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Electronova - inicio">
+        <img src="imagenes/electronova.png" alt="Logo Electronova">
+        <div class="title">Electronova</div>
+      </a>
+
+      <nav class="primary" aria-label="Navegación principal">
+        <a href="producto.html">Productos</a>
+        <a href="ofertas.html" aria-current="page">Ofertas</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="usuario.html">Usuario</a>
+        <a href="sobre-nosotros.html">Sobre nosotros</a>
+      </nav>
+
+      <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMobile()">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Ofertas</h1>
+      <p class="lead">Promociones limitadas. Hasta agotar existencias.</p>
+
+      <!-- 1) Lenovo Legion T5i 90Y -->
+      <section class="offer-card" role="listitem" aria-label="Lenovo Legion T5i 90Y en oferta"
+               data-now="52100" data-before="58000">
+        <div class="discount-badge">Oferta</div>
+        <div class="offer-img">
+          <img src="imagenes/legion1.webp" alt="Lenovo Legion T5i 90Y torre de escritorio">
+        </div>
+        <div class="details">
+          <div class="name">Lenovo Legion T5i 90Y</div>
+          <div class="model">Gaming Desktop</div>
+          <div class="stock" data-stock="3" aria-live="polite"></div>
+          <div class="price-line">
+            <div class="price-now">Precio: L52,100</div>
+          </div>
+          <ul class="specs">
+            <li>Procesador: Intel Core i7-13700F</li>
+            <li>Gráficos: NVIDIA GeForce RTX 4060 8 GB</li>
+            <li>Memoria: 16 GB DDR5-5600</li>
+            <li>Almacenamiento: SSD M.2 NVMe 512 GB</li>
+            <li>Sistema: Windows 11 Home</li>
+            <li>Puertos: 3× DisplayPort 1.4a • 1× HDMI 2.1</li>
+          </ul>
+          <div class="actions">
+            <a class="btn reservar" href="contacto.html">Reservar / Consultar</a>
+          </div>
+          <div class="terms">Sujeto a disponibilidad en tienda.</div>
+        </div>
+      </section>
+
+      <!-- 2) Dell Inspiron G5 5090 -->
+      <section class="offer-card" role="listitem" aria-label="Dell Inspiron G5 5090 en oferta"
+               data-now="23500" data-before="25000">
+        <div class="discount-badge">Oferta</div>
+        <div class="offer-img">
+          <img src="imagenes/inspirion1.webp" alt="Dell Inspiron G5 5090 torre de escritorio">
+        </div>
+        <div class="details">
+          <div class="name">Dell Inspiron G5 5090</div>
+          <div class="model">Desktop</div>
+          <div class="stock" data-stock="2" aria-live="polite"></div>
+          <div class="price-line">
+            <div class="price-now">Precio: L23,500</div>
+          </div>
+          <ul class="specs">
+            <li>Procesador: Intel Core i5-10400F</li>
+            <li>Gráficos: AMD Radeon RX 5300</li>
+            <li>Memoria: 16 GB DDR4</li>
+            <li>Almacenamiento: SSD 256 GB + HDD 1 TB</li>
+            <li>Sistema: Windows 10 Home</li>
+            <li>Puertos: 3× DisplayPort • 1× HDMI</li>
+          </ul>
+          <div class="actions">
+            <a class="btn reservar" href="contacto.html">Reservar / Consultar</a>
+          </div>
+          <div class="terms">Vigencia por tiempo limitado.</div>
+        </div>
+      </section>
+
+      <!-- 3) Acer Aspire TC-1785 I5616 -->
+      <section class="offer-card" role="listitem" aria-label="Acer Aspire TC-1785 I5616 en oferta"
+               data-now="15700" data-before="16500">
+        <div class="discount-badge">Oferta</div>
+        <div class="offer-img">
+          <img src="imagenes/acer1.webp" alt="Acer Aspire TC-1785 I5616 torre de escritorio">
+        </div>
+        <div class="details">
+          <div class="name">Acer Aspire TC-1785 I5616</div>
+          <div class="model">Desktop</div>
+          <div class="stock" data-stock="0" aria-live="polite"></div>
+          <div class="price-line">
+            <div class="price-now">Precio: L15,700</div>
+          </div>
+          <ul class="specs">
+            <li>Procesador: Intel Core i5-11400</li>
+            <li>Gráficos: Integrados Intel UHD Graphics 730</li>
+            <li>Memoria: 16 GB DDR4</li>
+            <li>Almacenamiento: SSD 512 GB</li>
+            <li>Sistema: Windows 11 Home</li>
+            <li>Puertos: 1× HDMI 2.0 • 1× DisplayPort</li>
+          </ul>
+          <div class="actions">
+            <a class="btn reservar" href="contacto.html">Reservar / Consultar</a>
+          </div>
+          <div class="terms">Agotado. Pregunta por próxima reposición.</div>
+        </div>
+      </section>
+
+      <a class="back" href="index.html">← Volver al inicio</a>
+    </div>
+  </main>
+
+  <script>
+    // Menú móvil
+    function toggleMobile(){
+      const nav = document.querySelector('nav.primary');
+      if(!nav) return;
+      nav.style.display = (nav.style.display === 'flex') ? 'none' : 'flex';
+      nav.style.flexDirection = 'column';
+      nav.style.position = 'absolute';
+      nav.style.right = '20px';
+      nav.style.top = '72px';
+      nav.style.background = 'white';
+      nav.style.padding = '12px';
+      nav.style.borderRadius = '12px';
+      nav.style.boxShadow = '0 18px 40px rgba(16,24,40,0.12)';
+      nav.style.zIndex = '60';
+    }
+
+    const fmtHNL = (v) => new Intl.NumberFormat('es-HN', {
+      style: 'currency', currency: 'HNL', minimumFractionDigits: 0, maximumFractionDigits: 0
+    }).format(v);
+
+    // Reglas de stock
+    document.querySelectorAll('.stock').forEach(el=>{
+      const n = Number(el.dataset.stock);
+      const reservarBtn = el.closest('.details')?.querySelector('.actions .reservar');
+
+      el.classList.remove('in','low','out');
+
+      if (!Number.isFinite(n) || n === 0) {
+        el.textContent = 'Agotado';
+        el.classList.add('out');
+        if (reservarBtn) {
+          reservarBtn.setAttribute('disabled','');
+          reservarBtn.setAttribute('aria-disabled','true');
+          reservarBtn.title = 'Agotado (no disponible para reservar)';
+        }
+        return;
+      }
+
+      if (reservarBtn) {
+        reservarBtn.removeAttribute('disabled');
+        reservarBtn.removeAttribute('aria-disabled');
+        reservarBtn.removeAttribute('title');
+      }
+
+      if (n <= 2) {
+        el.textContent = `Últimas unidades: ${n}`;
+        el.classList.add('low');
+      } else if (n > 3) {
+        el.textContent = `En existencia: ${n}`;
+        el.classList.add('in');
+      } else {
+        // n === 3
+        el.textContent = `Disponibles: ${n}`;
+        el.classList.add('in');
+      }
+    });
+
+    // Descuento automático: usa data-before y data-now
+    document.querySelectorAll('.offer-card').forEach(card=>{
+      const now = Number(card.dataset.now);
+      const before = Number(card.dataset.before);
+      const badge = card.querySelector('.discount-badge');
+      const priceLine = card.querySelector('.price-line');
+      const priceNowEl = card.querySelector('.price-now');
+
+      if (Number.isFinite(now)) {
+        priceNowEl.textContent = `Precio: ${fmtHNL(now)}`;
+      }
+
+      if (Number.isFinite(before) && Number.isFinite(now) && before > now) {
+        // Crea/actualiza "Antes" y "Ahorra"
+        let beforeEl = priceLine.querySelector('.price-before');
+        if (!beforeEl) {
+          beforeEl = document.createElement('div');
+          beforeEl.className = 'price-before';
+          priceLine.appendChild(beforeEl);
+        }
+        beforeEl.textContent = `Antes: ${fmtHNL(before)}`;
+
+        let saveEl = priceLine.querySelector('.save');
+        if (!saveEl) {
+          saveEl = document.createElement('div');
+          saveEl.className = 'save';
+          priceLine.appendChild(saveEl);
+        }
+        saveEl.textContent = `Ahorra ${fmtHNL(before - now)}`;
+
+        // Badge de porcentaje
+        const p = Math.round(((before - now) / before) * 100);
+        badge.textContent = `-${p}%`;
+      } else {
+        // Si no hay datos suficientes, deja "Oferta"
+        badge.textContent = 'Oferta';
+      }
+    });
+  </script>
+</body>
+</html>

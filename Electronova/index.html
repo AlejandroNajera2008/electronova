@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Electronova — Inicio</title>
+  <link rel="icon" href="imagenes/electronova.png" />
+
+  <style>
+    /* ---------- Variables ---------- */
+    :root{
+      --bg: #f4f6f9;
+      --azul-700: #0d3a66;
+      --azul-500: #1ea7ff;
+      --azul-400: #63c0ff;
+      --muted: #6b7280;
+      --card: #ffffff;
+      --glass: rgba(255,255,255,0.6);
+      --border: rgba(13,58,102,0.08);
+      --shadow-sm: 0 6px 20px rgba(16,24,40,0.06);
+      --shadow-md: 0 18px 40px rgba(16,24,40,0.08);
+      --radius: 14px;
+    }
+
+    /* ---------- Reset / base ---------- */
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:var(--bg);color:#0f1724;scroll-behavior:smooth}
+    a{color:inherit}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+    /* ---------- Header ---------- */
+    header{
+      position:sticky;top:0;z-index:50;
+      background:linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+      backdrop-filter: blur(6px) saturate(120%);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand img{width:52px;height:52px;object-fit:contain;border-radius:10px}
+    .brand .title{font-weight:800;color:var(--azul-700);font-size:1.05rem;letter-spacing:0.2px}
+    nav.primary{display:flex;gap:12px;align-items:center}
+    nav.primary a{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-weight:600}
+    nav.primary a:hover{background:rgba(13,58,102,0.04);color:var(--azul-700)}
+    .actions{display:flex;gap:8px;align-items:center}
+    .btn{border:0;cursor:pointer;border-radius:10px;padding:10px 14px;font-weight:700}
+    .btn-outline{background:transparent;border:1px solid var(--border);color:var(--azul-700)}
+    .btn-primary{background:linear-gradient(90deg,var(--azul-500),var(--azul-400));color:#032033;box-shadow:0 8px 24px rgba(30,167,255,0.12)}
+
+    /* mobile */
+    .menu-toggle{display:none;background:transparent;border:0;font-size:20px;cursor:pointer}
+    @media(max-width:880px){
+      nav.primary{display:none}
+      .menu-toggle{display:inline-block}
+    }
+
+    /* ---------- Hero ---------- */
+    .hero{
+      padding:64px 0 44px;
+      background:
+        radial-gradient(800px 200px at 10% 20%, rgba(30,167,255,0.06), transparent 10%),
+        radial-gradient(700px 200px at 95% 80%, rgba(13,58,102,0.04), transparent 10%);
+    }
+    .hero-grid{display:grid;grid-template-columns:1fr;gap:28px;align-items:center}
+    .kicker{display:inline-block;background:linear-gradient(90deg, rgba(30,167,255,0.08), rgba(13,58,102,0.04));padding:6px 12px;border-radius:999px;color:var(--azul-700);font-weight:800}
+    h1{font-size:clamp(30px,4.5vw,48px);margin:14px 0 8px;color:var(--azul-700);line-height:1.02}
+    p.lead{color:var(--muted);margin:0 0 18px;max-width:56ch}
+
+    /* ---------- Tiles (ventanas) ---------- */
+    .tiles{margin-top:20px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+    .tile{
+      background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82));
+      border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:1px solid var(--border);box-shadow:var(--shadow-sm);
+      text-align:center;cursor:pointer;transition:transform .18s ease, box-shadow .18s ease;
+      text-decoration:none;color:inherit;
+    }
+    .tile:hover{transform:translateY(-8px);box-shadow:0 26px 50px rgba(16,24,40,0.12)}
+    .tile .icon{
+      width:64px;height:64px;border-radius:12px;display:grid;place-items:center;font-size:26px;color:var(--azul-500);
+      background:linear-gradient(180deg, rgba(30,167,255,0.12), rgba(13,58,102,0.03));border:1px solid rgba(30,167,255,0.10)
+    }
+    .tile strong{color:var(--azul-700);font-weight:800}
+
+    @media(max-width:1200px){
+      .tiles{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:700px){
+      .tiles{grid-template-columns:repeat(2,1fr)}
+    }
+
+    /* ---------- Footer ---------- */
+    footer{margin-top:42px;padding:28px 0;border-top:1px solid var(--border);background:transparent}
+    .foot-grid{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+    .foot-left{display:flex;gap:12px;align-items:center}
+    .foot-left img{width:44px;height:44px}
+    .foot-right{color:var(--muted)}
+
+    .muted{color:var(--muted)}
+    .sr-only{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Electronova - inicio">
+        <img src="imagenes/electronova.png" alt="Logo Electronova">
+        <div class="title">Electronova</div>
+      </a>
+
+      <nav class="primary" aria-label="Navegación principal">
+        <a href="producto.html">Productos</a>
+        <a href="ofertas.html">Ofertas</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="usuario.html">Usuario</a>
+        <a href="sobre-nosotros.html">Sobre nosotros</a>
+      </nav>
+
+      <div class="actions">
+        <a class="btn btn-outline" href="producto.html" aria-label="Ir a productos">Ver catálogo</a>
+        <a class="btn btn-primary" href="ofertas.html" aria-label="Ver ofertas">Ofertas</a>
+        <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMobile()">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid" aria-labelledby="heroTitle">
+        <div>
+          <span class="kicker">Nuevas llegadas</span>
+          <h1 id="heroTitle">Electronova — Tecnología que impulsa tu día</h1>
+          <p class="lead">Laptops, PC armadas, monitores y accesorios con garantía y soporte experto.</p>
+
+          <!-- Sin botones en el hero -->
+
+          <!-- Tiles / Ventanas -->
+          <div class="tiles" role="list" aria-label="Accesos rápidos">
+            <a class="tile" role="listitem" href="producto.html">
+              <div class="icon">💻</div>
+              <strong>Productos</strong>
+              <div class="muted">Laptops, PCs y accesorios</div>
+            </a>
+
+            <a class="tile" role="listitem" href="ofertas.html">
+              <div class="icon">🔥</div>
+              <strong>Ofertas</strong>
+              <div class="muted">Descuentos por tiempo limitado</div>
+            </a>
+
+            <a class="tile" role="listitem" href="contacto.html">
+              <div class="icon">📞</div>
+              <strong>Contacto</strong>
+              <div class="muted">Soporte y consultas</div>
+            </a>
+
+            <a class="tile" role="listitem" href="usuario.html">
+              <div class="icon">👤</div>
+              <strong>Usuario</strong>
+              <div class="muted">Inicia sesión / Perfil</div>
+            </a>
+
+            <a class="tile" role="listitem" href="sobre-nosotros.html">
+              <div class="icon">🏢</div>
+              <strong>Sobre nosotros</strong>
+              <div class="muted">Quiénes somos</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container foot-grid">
+      <div class="foot-left">
+        <img src="imagenes/electronova.png" alt="Logo Electronova">
+        <div>
+          <div style="font-weight:800;color:var(--azul-700)">Electronova</div>
+          <div class="muted" style="font-size:13px">Tiendas de informática • Garantía</div>
+        </div>
+      </div>
+
+      <div class="foot-right muted">© <span id="year"></span> Electronova</div>
+    </div>
+  </footer>
+
+  <script>
+    // Menú móvil simple
+    function toggleMobile(){
+      const nav = document.querySelector('nav.primary');
+      if(!nav) return;
+      nav.style.display = (nav.style.display === 'flex') ? 'none' : 'flex';
+      nav.style.flexDirection = 'column';
+      nav.style.position = 'absolute';
+      nav.style.right = '16px';
+      nav.style.top = '72px';
+      nav.style.background = 'white';
+      nav.style.padding = '12px';
+      nav.style.borderRadius = '12px';
+      nav.style.boxShadow = '0 18px 40px rgba(16,24,40,0.12)';
+    }
+
+    // Año dinámico
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

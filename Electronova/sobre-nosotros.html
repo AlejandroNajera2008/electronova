@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Electronova — Sobre nosotros</title>
+  <link rel="icon" href="imagenes/electronova.png" />
+  <style>
+    /* ---------- Tema unificado ---------- */
+    :root{
+      --bg:#f4f6f9;
+      --azul-700:#0d3a66;
+      --azul-500:#1ea7ff;
+      --azul-400:#63c0ff;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --border:rgba(13,58,102,0.08);
+      --shadow-sm:0 6px 20px rgba(16,24,40,0.06);
+      --shadow-md:0 18px 40px rgba(16,24,40,0.10);
+      --radius:14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:#0f1724;font-family:Inter,system-ui,Arial}
+    a{color:inherit}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+    /* Header translúcido */
+    header{
+      position:sticky;top:0;z-index:50;
+      background:linear-gradient(90deg, rgba(255,255,255,0.70), rgba(255,255,255,0.55));
+      backdrop-filter: blur(6px) saturate(120%);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand img{width:52px;height:52px;object-fit:contain;border-radius:10px}
+    .brand .title{font-weight:800;color:var(--azul-700);font-size:1.05rem;letter-spacing:.2px}
+    nav.primary{display:flex;gap:12px;align-items:center}
+    nav.primary a{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-weight:600}
+    nav.primary a:hover{background:rgba(13,58,102,0.04);color:var(--azul-700)}
+    .menu-toggle{display:none;background:transparent;border:0;font-size:20px;cursor:pointer}
+    @media(max-width:880px){
+      nav.primary{display:none}
+      .menu-toggle{display:inline-block}
+    }
+
+    /* Contenido */
+    main{padding:24px 0}
+    h1{margin:0 0 8px;color:var(--azul-700)}
+    p.lead{color:var(--muted);margin:0 0 18px}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-sm);
+      padding:16px;
+    }
+
+    .about-grid{
+      display:grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap:16px;
+      margin-bottom:16px;
+    }
+    @media(max-width:950px){ .about-grid{grid-template-columns:1fr} }
+
+    .sections{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+    @media(max-width:900px){ .sections{grid-template-columns:1fr} }
+
+    h2{margin:0 0 8px;color:var(--azul-700)}
+    .muted{color:var(--muted)}
+
+    .list{margin:8px 0 0;padding-left:18px}
+    .list li{margin:6px 0}
+    .back{display:inline-block;margin-top:16px;text-decoration:none;color:var(--azul-700);font-weight:800}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Electronova - inicio">
+        <img src="imagenes/electronova.png" alt="Logo Electronova">
+        <div class="title">Electronova</div>
+      </a>
+
+      <nav class="primary" aria-label="Navegación principal">
+        <a href="producto.html">Productos</a>
+        <a href="ofertas.html">Ofertas</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="usuario.html">Usuario</a>
+        <a href="sobre-nosotros.html" aria-current="page">Sobre nosotros</a>
+      </nav>
+
+      <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMobile()">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Sobre nosotros</h1>
+      <p class="lead">Somos una tienda local de tecnología. Nos enfocamos en ofrecer equipos confiables, asesoría honesta y soporte cercano.</p>
+
+      <section class="about-grid">
+        <article class="card">
+          <h2>¿Quiénes somos?</h2>
+          <p>
+            Electronova es una tienda de informática local. Ayudamos a estudiantes, profesionales y empresas a elegir la computadora ideal,
+            con instalación y configuración listas para usar. Valoramos la cercanía: puedes venir a ver, probar y recoger tus productos.
+          </p>
+          <p class="muted">Atención personalizada, garantía y soporte técnico cuando lo necesites.</p>
+        </article>
+
+        <article class="card">
+          <h2>Datos rápidos</h2>
+          <ul class="list">
+            <li>Especialistas en laptops, PCs armadas, monitores y periféricos.</li>
+            <li>Armado de PC a medida y actualización de equipos.</li>
+            <li>Diagnóstico y mantenimiento preventivo.</li>
+            <li>Venta solo en tienda.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="sections">
+        <article class="card">
+          <h2>Misión</h2>
+          <p>
+            Brindar soluciones tecnológicas confiables y accesibles, con asesoría experta y servicio cercano,
+            para que cada cliente obtenga el equipo adecuado a sus necesidades.
+          </p>
+        </article>
+
+        <article class="card">
+          <h2>Visión</h2>
+          <p>
+            Ser la tienda de informática de referencia en la ciudad por calidad, confianza y experiencia de compra,
+            creciendo junto a nuestra comunidad tecnológica local.
+          </p>
+        </article>
+
+        <article class="card">
+          <h2>Objetivos</h2>
+          <ul class="list">
+            <li>Garantizar inventario actualizado de los modelos más solicitados.</li>
+            <li>Ofrecer precios claros y opciones de financiación cuando sea posible.</li>
+            <li>Entregar PCs armadas con pruebas de rendimiento y garantía.</li>
+            <li>Dar soporte técnico ágil y postventa efectivo.</li>
+            <li>Capacitar al equipo para un servicio honesto y profesional.</li>
+            <li>Impulsar programas y eventos para la comunidad local.</li>
+          </ul>
+        </article>
+      </section>
+
+      <a href="index.html" class="back">← Volver al inicio</a>
+    </div>
+  </main>
+
+  <script>
+    // Menú móvil (igual que en las otras páginas)
+    function toggleMobile(){
+      const nav = document.querySelector('nav.primary');
+      if(!nav) return;
+      nav.style.display = (nav.style.display === 'flex') ? 'none' : 'flex';
+      nav.style.flexDirection = 'column';
+      nav.style.position = 'absolute';
+      nav.style.right = '20px';
+      nav.style.top = '72px';
+      nav.style.background = 'white';
+      nav.style.padding = '12px';
+      nav.style.borderRadius = '12px';
+      nav.style.boxShadow = '0 18px 40px rgba(16,24,40,0.12)';
+      nav.style.zIndex = '60';
+    }
+  </script>
+</body>
+</html>

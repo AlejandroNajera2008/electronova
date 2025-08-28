@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Electronova — Perfil</title>
+  <link rel="icon" href="imagenes/electronova.png" />
+  <style>
+    :root{
+      --bg:#f4f6f9; --azul-700:#0d3a66; --azul-500:#1ea7ff; --azul-400:#63c0ff;
+      --muted:#6b7280; --card:#ffffff; --border:rgba(13,58,102,0.08);
+      --shadow-sm:0 6px 20px rgba(16,24,40,0.06); --shadow-md:0 18px 40px rgba(16,24,40,0.10);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:#0f1724;font-family:Inter,system-ui,Arial}
+    a{color:inherit}
+    .container{max-width:900px;margin:0 auto;padding:0 20px}
+
+    header{position:sticky;top:0;z-index:50;background:linear-gradient(90deg, rgba(255,255,255,0.70), rgba(255,255,255,0.55));
+      backdrop-filter: blur(6px) saturate(120%); border-bottom:1px solid var(--border);}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand img{width:52px;height:52px;object-fit:contain;border-radius:10px}
+    .brand .title{font-weight:800;color:var(--azul-700);font-size:1.05rem;letter-spacing:.2px}
+    .right{display:flex;align-items:center;gap:10px}
+    .pill{background:#fff;border:1px solid var(--border);border-radius:999px;padding:6px 10px;font-weight:800;color:var(--azul-700)}
+    .logout{background:linear-gradient(90deg,var(--azul-500),var(--azul-400));color:#032033;border:none;border-radius:10px;padding:8px 10px;font-weight:900;cursor:pointer}
+
+    main{padding:28px 0}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:var(--shadow-sm);padding:22px;display:grid;gap:12px}
+    .email-top{color:#475569;text-align:center;font-weight:700}
+    .avatar-wrap{position:relative;margin:8px auto 0;width:128px;height:128px;border-radius:50%;
+      background:#e9eef6;display:grid;place-items:center;overflow:hidden;box-shadow:0 10px 30px rgba(16,24,40,0.12)}
+    .avatar-wrap img{width:100%;height:100%;object-fit:cover}
+    .cam{position:absolute;bottom:8px;right:8px;background:#fff;border:1px solid var(--border);border-radius:10px;
+      font-weight:900;color:#0d3a66;padding:6px 8px;font-size:12px;cursor:pointer}
+    #avatarInput{display:none}
+
+    h1{margin:6px 0 0;text-align:center;color:var(--azul-700)}
+    .actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:8px}
+    .btn{background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-weight:800;color:#0d3a66;text-decoration:none}
+    .danger{background:#fee2e2;border-color:#fecaca;color:#991b1b}
+
+    .section{background:#ffffff;border:1px dashed var(--border);border-radius:12px;padding:14px}
+    .section h3{margin:0 0 6px;color:#0d3a66}
+  </style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a class="brand" href="index.html" aria-label="Electronova - inicio">
+      <img src="imagenes/electronova.png" alt="Logo Electronova"><div class="title">Electronova</div>
+    </a>
+    <div class="right">
+      <div id="hello" class="pill" aria-live="polite"></div>
+      <button class="logout" onclick="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="card" aria-label="Perfil de usuario">
+      <div id="emailTop" class="email-top"></div>
+
+      <div class="avatar-wrap">
+        <img id="avatar" alt="Avatar de usuario">
+        <button class="cam" type="button" onclick="document.getElementById('avatarInput').click()">📷</button>
+        <input id="avatarInput" type="file" accept="image/*">
+      </div>
+
+      <h1 id="greet">¡Hola!</h1>
+
+      <div class="actions">
+        <a href="producto.html" class="btn">Ver productos</a>
+        <a href="ofertas.html" class="btn">Ver ofertas</a>
+        <button class="btn danger" onclick="logout()">Cerrar sesión</button>
+      </div>
+
+      <div class="section">
+        <h3>Tu cuenta</h3>
+        <p style="margin:0;color:#475569">Desde aquí pronto podrás ver reservas, historial y soporte prioritario.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:14px">
+      <a href="index.html" class="btn">← Volver al inicio</a>
+    </div>
+  </div>
+</main>
+
+<script>
+  // Redirige si no hay sesión
+  function getUser(){
+    try { return JSON.parse(localStorage.getItem('electronovaUser') || 'null'); }
+    catch { return null; }
+  }
+  const user = getUser();
+  if (!user || !user.loggedIn) {
+    window.location.replace('usuario.html');
+  }
+
+  function logout(){
+    localStorage.removeItem('electronovaUser');
+    window.location.href = 'usuario.html';
+  }
+
+  // Pintar datos
+  const greet = document.getElementById('greet');
+  const hello = document.getElementById('hello');
+  const emailTop = document.getElementById('emailTop');
+  const avatarImg = document.getElementById('avatar');
+  const input = document.getElementById('avatarInput');
+
+  const username = (user?.username || 'Usuario').trim();
+  const email = user?.email || '';
+
+  greet.textContent = `¡Hola, ${username}!`;
+  hello.textContent = `Hola, ${username}`;
+  emailTop.textContent = email;
+
+  // Avatar: usa guardado o genera uno con iniciales
+  function avatarFromInitials(name){
+    const initials = (name.split(' ').map(s=>s[0]).join('').substring(0,2) || 'U').toUpperCase();
+    const svg = `
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'>
+        <defs>
+          <linearGradient id='g' x1='0' x2='1' y1='0' y2='1'>
+            <stop offset='0%' stop-color='#0d3a66'/><stop offset='100%' stop-color='#63c0ff'/>
+          </linearGradient>
+        </defs>
+        <rect width='128' height='128' rx='64' fill='url(#g)'/>
+        <text x='50%' y='58%' dominant-baseline='middle' text-anchor='middle'
+              font-family='Inter, Arial' font-size='56' font-weight='900' fill='#ffffff'>${initials}</text>
+      </svg>`;
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+  }
+  const initialAvatar = avatarFromInitials(username);
+  avatarImg.src = user?.avatar || initialAvatar;
+
+  // Subir/guardar avatar
+  input.addEventListener('change', e=>{
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      avatarImg.src = reader.result;
+      const u = getUser() || {};
+      u.avatar = reader.result;
+      u.loggedIn = true;
+      localStorage.setItem('electronovaUser', JSON.stringify(u));
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Menú móvil (por consistencia)
+  function toggleMobile(){
+    const nav = document.querySelector('nav.primary');
+    if(!nav) return;
+    nav.style.display = (nav.style.display === 'flex') ? 'none' : 'flex';
+    nav.style.flexDirection = 'column';
+    nav.style.position = 'absolute';
+    nav.style.right = '20px';
+    nav.style.top = '72px';
+    nav.style.background = 'white';
+    nav.style.padding = '12px';
+    nav.style.borderRadius = '12px';
+    nav.style.boxShadow = '0 18px 40px rgba(16,24,40,0.12)';
+    nav.style.zIndex = '60';
+  }
+</script>
+</body>
+</html>

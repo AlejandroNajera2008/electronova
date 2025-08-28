@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Electronova — Productos</title>
+  <link rel="icon" href="imagenes/electronova.png" />
+  <style>
+    /* ---------- Tema unificado ---------- */
+    :root{
+      --bg:#f4f6f9;
+      --azul-700:#0d3a66;
+      --azul-500:#1ea7ff;
+      --azul-400:#63c0ff;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --border:rgba(13,58,102,0.08);
+      --shadow-sm:0 6px 20px rgba(16,24,40,0.06);
+      --shadow-md:0 18px 40px rgba(16,24,40,0.10);
+      --radius:14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:#0f1724;font-family:Inter,system-ui,Arial}
+    a{color:inherit}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+    /* Header */
+    header{
+      position:sticky;top:0;z-index:50;
+      background:linear-gradient(90deg, rgba(255,255,255,0.70), rgba(255,255,255,0.55));
+      backdrop-filter: blur(6px) saturate(120%);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand img{width:52px;height:52px;object-fit:contain;border-radius:10px}
+    .brand .title{font-weight:800;color:var(--azul-700);font-size:1.05rem;letter-spacing:.2px}
+    nav.primary{display:flex;gap:12px;align-items:center}
+    nav.primary a{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-weight:600}
+    nav.primary a[aria-current="page"]{color:var(--azul-700)}
+    nav.primary a:hover{background:rgba(13,58,102,0.04);color:var(--azul-700)}
+    .menu-toggle{display:none;background:transparent;border:0;font-size:20px;cursor:pointer}
+    @media(max-width:880px){
+      nav.primary{display:none}
+      .menu-toggle{display:inline-block}
+    }
+
+    main{padding:24px 0}
+    h1{margin:0 0 6px;color:var(--azul-700)}
+    p.lead{color:var(--muted);margin-top:0}
+
+    /* ---------- Producto completo por línea ---------- */
+    .product-row{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow-sm);
+      padding:14px;
+      display:grid;
+      grid-template-columns: 1.4fr 1fr; /* galería grande + detalles */
+      gap:16px;
+      margin-bottom:16px;
+    }
+    /* Galería hasta 4 fotos (grandes) */
+    .gallery{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      grid-auto-rows:200px;
+      gap:12px;
+    }
+    .gallery img{
+      width:100%;height:100%;object-fit:cover;border-radius:12px;background:#e9eef6
+    }
+    /* Si solo pones 1 imagen, se hace grande ocupando todo */
+    .gallery:has(img:nth-child(1)):not(:has(img:nth-child(2))) img:nth-child(1){
+      grid-column:1 / -1; grid-row:1 / -1; height:420px;
+    }
+
+    /* Detalles visibles sin entrar a otra página */
+    .details{display:flex;flex-direction:column;gap:8px}
+    .name{font-weight:900;color:var(--azul-700);font-size:20px}
+    .model{color:var(--muted);font-size:13px;margin-top:-4px}
+
+    /* Stock badge */
+    .stock{align-self:flex-start;font-weight:800;font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid transparent}
+    .stock.in{color:#065f46;background:#ecfdf5;border-color:#10b98133}    /* verde */
+    .stock.low{color:#92400e;background:#fffbeb;border-color:#f59e0b33}  /* ámbar */
+    .stock.out{color:#991b1b;background:#fef2f2;border-color:#ef444433}  /* rojo */
+
+    .specs{list-style:disc;padding-left:18px;margin:6px 0;color:#111}
+    .specs li{margin:4px 0;font-size:14px}
+    .price{margin-top:auto;font-weight:900;color:var(--azul-700);font-size:22px}
+    .actions{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+    .btn{
+      background:linear-gradient(90deg,var(--azul-500),var(--azul-400));
+      color:#032033;border:none;border-radius:10px;padding:10px 12px;font-weight:800;text-decoration:none
+    }
+    .btn-outline{
+      background:#fff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-weight:800;text-decoration:none;color:var(--azul-700)
+    }
+    /* Deshabilitar anclas como botones cuando no hay stock */
+    .btn[disabled]{opacity:.55;pointer-events:none}
+
+    /* Responsive: apilar en móviles */
+    @media (max-width:900px){
+      .product-row{grid-template-columns:1fr}
+      .gallery{grid-auto-rows:160px}
+    }
+
+    .back{display:inline-block;margin-top:16px;text-decoration:none;color:var(--azul-700);font-weight:800}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="Electronova - inicio">
+        <img src="imagenes/electronova.png" alt="Logo Electronova">
+        <div class="title">Electronova</div>
+      </a>
+
+      <nav class="primary" aria-label="Navegación principal">
+        <a href="producto.html" aria-current="page">Productos</a>
+        <a href="ofertas.html">Ofertas</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="usuario.html">Usuario</a>
+        <a href="sobre-nosotros.html">Sobre nosotros</a>
+      </nav>
+
+      <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMobile()">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Productos</h1>
+      <p class="lead">Un producto por línea, con fotos grandes (hasta 4) y especificaciones visibles.</p>
+
+      <!-- Lenovo ThinkPad X9 15 Aura Edition -->
+      <section class="product-row" role="listitem" aria-label="Lenovo ThinkPad X9 15 Aura Edition">
+        <div class="gallery">
+          <img src="imagenes/lenovo1.jpg" alt="Lenovo ThinkPad X9 15 frente">
+          <img src="imagenes/lenovo2.jpg" alt="Lenovo ThinkPad X9 15 teclado">
+          <img src="imagenes/lenovo3.jpg" alt="Lenovo ThinkPad X9 15 perfil">
+          <img src="imagenes/lenovo4.jpg" alt="Lenovo ThinkPad X9 15 puertos">
+        </div>
+        <div class="details">
+          <div class="name">Lenovo ThinkPad X9 15 Aura Edition</div>
+          <div class="model">Modelo: ThinkPad X9 15 Aura Edition Gen 1</div>
+          <div class="stock" data-stock="5" aria-live="polite"></div>
+          <ul class="specs">
+            <li>CPU: Core Ultra 5 226V</li>
+            <li>GPU: Integrada Intel Arc Graphics 140V</li>
+            <li>RAM: 16 GB DDR5 • SSD NVMe 1 TB</li>
+            <li>Pantalla 15.6" FHD 144 Hz • Wi‑Fi 6</li>
+          </ul>
+          <div class="price">L40,000</div>
+          <div class="actions">
+            <a class="btn reservar" href="contacto.html">Reservar / Consultar</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Apple MacBook Pro 16.2" (M4 Max, 2024) -->
+      <section class="product-row" role="listitem" aria-label="Apple MacBook Pro 16.2 M4 Max 2024">
+        <div class="gallery">
+          <img src="imagenes/macbook%20pro1.jpg" alt="MacBook Pro 16.2 frente">
+          <img src="imagenes/macbook%20pro2.jpg" alt="MacBook Pro 16.2 perfil">
+          <img src="imagenes/macbook%20pro3.jpg" alt="MacBook Pro 16.2 teclado y trackpad">
+          <img src="imagenes/macbook%20pro4.jpg" alt="MacBook Pro 16.2 pantalla Liquid Retina XDR">
+        </div>
+        <div class="details">
+          <div class="name">Apple MacBook Pro 16.2" (M4 Max, 2024)</div>
+          <div class="model">Modelo: A-2024 MBP 16.2 M4 Max</div>
+          <div class="stock" data-stock="2" aria-live="polite"></div>
+          <ul class="specs">
+            <li>CPU/GPU: Apple M4 Max • GPU hasta 40 núcleos</li>
+            <li>Pantalla: 16.2" Mini LED Liquid Retina XDR (3456×2234)</li>
+            <li>Batería: hasta 20 h de autonomía</li>
+            <li>Memoria/Almacenamiento: hasta 48 GB RAM • hasta 8 TB SSD</li>
+          </ul>
+          <div class="price">L114,500</div>
+          <div class="actions">
+            <a class="btn reservar" href="contacto.html">Reservar / Consultar</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Microsoft Surface Laptop 7 (2025) -->
+      <section class="product-row" role="listitem" aria-label="Microsoft Surface Laptop 7 2025">
+        <div class="gallery">
+          <img src="imagenes/surface1.jpg" alt="Surface Laptop 7 frente">
+          <img src="imagenes/surface2.jpg" alt="Surface Laptop 7 PixelSense 120 Hz">
+          <img src="imagenes/surface3.jpeg" alt="Surface Laptop 7 perfil ligero">
+          <img src="imagenes/surface4.jpg" alt="Surface Laptop 7 puertos y teclado">
+        </div>
+        <div class="details">
+          <div class="name">Microsoft Surface Laptop 7 (2025)</div>
+          <div class="model">Modelo: Surface Laptop 7 (13.8&quot; / 15&quot;)</div>
+          <div class="stock" data-stock="0" aria-live="polite"></div>
+          <ul class="specs">
+            <li>CPU: Snapdragon X Elite (12 núcleos, hasta 3.8 GHz)</li>
+            <li>Pantalla: 13.8" o 15" PixelSense táctil • 120 Hz • 3:2</li>
+            <li>Batería: 15–16 h uso intensivo • +20 h reproducción</li>
+            <li>Ventajas: eficiente, silencioso y ligero (ideal trabajo/estudio/streaming)</li>
+          </ul>
+          <div class="price">L23,000</div>
+          <div class="actions">
+            <a class="btn reservar" href="contacto.html">Reservar / Consultar</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Razer Blade 16 (2025) -->
+      <section class="product-row" role="listitem" aria-label="Razer Blade 16 2025">
+        <div class="gallery">
+          <img src="imagenes/razer1.jpg" alt="Razer Blade 16 vista frontal">
+          <img src="imagenes/razer2.jpg" alt="Razer Blade 16 pantalla OLED 240 Hz 2560×1600">
+          <img src="imagenes/razer3.jpg" alt="Razer Blade 16 con refrigeración Vapor Chamber">
+          <img src="imagenes/razer4.jpg" alt="Razer Blade 16 teclado RGB por tecla">
+        </div>
+        <div class="details">
+          <div class="name">Razer Blade 16 (2025)</div>
+          <div class="model">Modelo: Blade 16 2025</div>
+          <div class="stock" data-stock="1" aria-live="polite"></div>
+          <ul class="specs">
+            <li>CPU: AMD Ryzen 9 HX 370 (Ryzen AI)</li>
+            <li>GPU: NVIDIA GeForce RTX 5090 (laptop)</li>
+            <li>Pantalla: 16" OLED • 240 Hz • 2560×1600</li>
+            <li>Otros: vapor chamber • chasis CNC • RGB por tecla • batería ~6–7 h</li>
+          </ul>
+          <div class="price">L117,100</div>
+          <div class="actions">
+            <a class="btn reservar" href="contacto.html">Reservar / Consultar</a>
+          </div>
+        </div>
+      </section>
+
+      <a class="back" href="index.html">← Volver al inicio</a>
+    </div>
+  </main>
+
+  <script>
+    // Menú móvil
+    function toggleMobile(){
+      const nav = document.querySelector('nav.primary');
+      if(!nav) return;
+      nav.style.display = (nav.style.display === 'flex') ? 'none' : 'flex';
+      nav.style.flexDirection = 'column';
+      nav.style.position = 'absolute';
+      nav.style.right = '20px';
+      nav.style.top = '72px';
+      nav.style.background = 'white';
+      nav.style.padding = '12px';
+      nav.style.borderRadius = '12px';
+      nav.style.boxShadow = '0 18px 40px rgba(16,24,40,0.12)';
+      nav.style.zIndex = '60';
+    }
+
+    // Renderizar estado de stock según reglas solicitadas
+    document.querySelectorAll('.stock').forEach(el=>{
+      const n = Number(el.dataset.stock);
+      const reservarBtn = el.closest('.details')?.querySelector('.actions .reservar');
+
+      // Limpia estados previos
+      el.classList.remove('in','low','out');
+
+      if (!Number.isFinite(n) || n === 0) {
+        // 0 -> Agotado
+        el.textContent = 'Agotado';
+        el.classList.add('out');
+        if (reservarBtn) {
+          reservarBtn.setAttribute('disabled','');
+          reservarBtn.setAttribute('aria-disabled','true');
+          reservarBtn.title = 'Agotado (no disponible para reservar)';
+        }
+        return;
+      }
+
+      // Asegura que el botón esté habilitado si hay stock
+      if (reservarBtn) {
+        reservarBtn.removeAttribute('disabled');
+        reservarBtn.removeAttribute('aria-disabled');
+        reservarBtn.removeAttribute('title');
+      }
+
+      if (n <= 2) {
+        // <= 2 -> Últimas unidades
+        el.textContent = `Últimas unidades: ${n}`;
+        el.classList.add('low');
+      } else if (n > 3) {
+        // > 3 -> En existencia
+        el.textContent = `En existencia: ${n}`;
+        el.classList.add('in');
+      } else {
+        // n === 3 (caso intermedio no pedido explícitamente)
+        el.textContent = `Disponibles: ${n}`;
+        el.classList.add('in');
+      }
+    });
+  </script>
+</body>
+</html>
